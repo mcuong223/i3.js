@@ -24,9 +24,9 @@
 ```
 Lưu ý: toàn bộ `state` liên quan tới dữ liệu đều phải do thằng `Cha` nắm giữ, các `Con` chỉ có `state` riêng khi `state` đó nhằm mục đích đại loại bật tắt một thứ gì đó, hoặc màu sắc của chữ, ...
 
-### Các phương thức thường hay sử dụng
+### Các phương thức chỉnh sửa `state` thường hay sử dụng
 Nói một cách chuyên sâu thì `BasePage` định nghĩa các hàm/function dùng để chỉnh sửa `state` của nó một cách thuận tiện, và các function này được share cho các `BaseConsumer` nhờ vậy mà tại `Cha` hay tại các `Con` đều có thể sử dụng các function này để chỉnh sửa `state`
-Lưu ý: Chỉ có thể sử dụng các hàm này để chỉnh sửa lên `state` của thằng `Cha` (extends from `BasePage`)
+Lưu ý 1: Chỉ có thể sử dụng các hàm này để chỉnh sửa lên `state` của thằng `Cha` (extends from `BasePage`)
 
 `state` mẫu
 ```jsx
@@ -38,7 +38,6 @@ Lưu ý: Chỉ có thể sử dụng các hàm này để chỉnh sửa lên `st
         ]
     }
 ```
-
 ###### 1. updateObject
 Hàm này dùng để update một hoặc nhiều trường của một Object  (xuất phát từ `state` của `Cha`), hay nói các khác là merge một object mới vào object cũ
 ```jsx
@@ -55,5 +54,85 @@ Hàm này dùng để xoá toàn bộ các phần tử của một mảng và th
 ```jsx
     // this.clearListAndPushNewItems(oldList, newList, callback);
     // VD: 
-    this.clearListAndPushNewItems(this.state.people, [{name: "Cuong", dateOfBirth: "2k8"}]);
+    this.clearListAndPushNewItems(this.state.people, [{name: "Cuong", dateOfBirth: "2k8"}, {name: "Tran", dateOfBirth: "1985"}]);
 ```
+###### 3. addElement
+Thêm một phần tử vào cuối, hoặc vào một vị trí cụ thể của list nếu truyền vào index
+```jsx
+    // this.addElement(listObj, obj, index, callback);
+    // VD: 
+    this.addElement(this.state.people, {name: "Cuong", dateOfBirth: "2k8"});
+```
+###### 4. removeElement
+Xoá một phần từ khỏi List
+```jsx
+    // this.addElement(listObj, obj, callback);
+    // VD: 
+    this.addElement(this.state.people, this.state.people[0]);
+```
+
+###### 4. removeElement
+Xoá một phần từ khỏi List
+```jsx
+    // this.addElement(listObj, obj, callback);
+    // VD: 
+    this.addElement(this.state.people, this.state.people[0]);
+```
+
+### Các hàm hỗ trợ 
+
+
+###### 5. openModal
+Mở một modal và trả về id (thực sự là index) của modal đó, dùng ở hàm 6
+```jsx
+    this.openModal(()=>{
+        return({
+            title: "tiêu đề của modal",
+            body: <A_Random_Component />, // nội dung
+            otherProps: {
+                // một số các option cho modal, có thể có hoặc ko 
+                slideDirection: "left" // or "right", "down", "up", phía xuất hiện và biến mất của modal
+                freeSize: true // false, nếu true thì kích thước modal sẽ tuỳ thuộc vào body
+                // và một số options khác
+            }
+        })
+    });
+```
+
+###### 6. closeModal
+Tắt một modal dựa vào index, nếu truyền index là -1 thì sẽ mở modal được tạo gần nhất
+```jsx
+    // this.closeModal(1);
+```
+
+###### 7. this.alertify.
+`this.alertify` là một object, có 4 functions
+```jsx
+    // 3 hàm này tương tự nhau, dùng để popup thông báo đơn 
+    this.alertify.success("Thành công");
+    this.alertify.warning("Cảnh báo");
+    this.alertify.error("Lỗi");
+    
+    // hàm này dùng để confirm
+    this.alertify.confirm(
+        "Are you gay?",
+        {
+            okay: {
+                title: "yes, Duy's gay", // text hiển thị trên nút oke 
+                handle: () => {
+                    // hành động thực hiện sau khi nhấn nút oke
+                }
+            },
+            cancel: {
+                title: "no, Duy isnt gay, but his boy friend is", // text hiển thị trên nút cancel 
+                handle: () => {
+                    // hành động thực hiện sau khi nhấn nút cancel
+                }
+            }
+        }
+    )
+    
+```
+
+
+
