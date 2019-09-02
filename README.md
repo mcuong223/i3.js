@@ -71,13 +71,6 @@ Xoá một phần từ khỏi List
     this.addElement(this.state.people, this.state.people[0]);
 ```
 
-###### 4. removeElement
-Xoá một phần từ khỏi List
-```jsx
-    // this.addElement(listObj, obj, callback);
-    // VD: 
-    this.addElement(this.state.people, this.state.people[0]);
-```
 
 ### Các hàm hỗ trợ 
 
