@@ -98,26 +98,25 @@ Tắt một modal dựa vào index, nếu truyền index là -1 thì sẽ mở m
     // this.closeModal(1);
 ```
 
-###### 7. this.alertify.
-`this.alertify` là một object, có 4 functions
+###### 7.
 ```jsx
     // 3 hàm này tương tự nhau, dùng để popup thông báo đơn 
-    this.alertify.success("Thành công");
-    this.alertify.warning("Cảnh báo");
-    this.alertify.error("Lỗi");
+    this.success("Thành công");
+    this.warning("Cảnh báo");
+    this.error("Lỗi");
     
     // hàm này dùng để confirm
-    this.alertify.confirm(
-        "Are you gay?",
+    this.confirm(
+        "Are you sure about that?",
         {
             okay: {
-                title: "yes, Duy's gay", // text hiển thị trên nút oke 
+                title: "Yes I am", // text hiển thị trên nút oke 
                 handle: () => {
                     // hành động thực hiện sau khi nhấn nút oke
                 }
             },
             cancel: {
-                title: "no, Duy isnt gay, but his boy friend is", // text hiển thị trên nút cancel 
+                title: "No I'm not", // text hiển thị trên nút cancel 
                 handle: () => {
                     // hành động thực hiện sau khi nhấn nút cancel
                 }
