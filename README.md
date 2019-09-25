@@ -54,7 +54,13 @@ Hàm này dùng để xoá toàn bộ các phần tử của một mảng và th
 ```jsx
     // this.clearListAndPushNewItems(oldList, newList, callback);
     // VD: 
-    this.clearListAndPushNewItems(this.state.people, [{name: "Cuong", dateOfBirth: "2k8"}, {name: "Tran", dateOfBirth: "1985"}]);
+    this.clearListAndPushNewItems(
+       this.state.people, 
+       [
+         {name: "Cuong", dateOfBirth: "2k8"}, 
+         {name: "Tran", dateOfBirth: "1985"}
+       ]
+   );
 ```
 ###### 3. addElement
 Thêm một phần tử vào cuối, hoặc vào một vị trí cụ thể của list nếu truyền vào index
