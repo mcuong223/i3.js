@@ -100,11 +100,42 @@ Xoá một phần từ khỏi List dựa vào reference (KHÔNG phải giá tr�
     this.removeElement(this.state.people, this.state.people[0]);
 ```
 
+###### 5. mergeList
+Ghép một 1 list mới vào 1 list cũ từ state theo điều kiện
+Cú pháp:
+```jsx
+    this.mergeList(oldList, newList, comparer, callback);
+```
+VD: 
+```jsx
+    this.state.list = [
+       {id: 1, name: "John"},
+       {id: 2, name: "Jimmy"},
+    ];
+    var newList = [
+       {id: 3, name: "Jane"},
+       {id: 1, name: "Josh"},
+    ]
+    function compareFunc(a, b){
+       return a.id == b.id
+    } 
+    this.mergeList(this.state.list, newList, compareFunc, ()=>{
+      // this.state.list lúc này sẽ là
+      [
+        {id: 1, name: "Josh"},
+        {id: 2, name: "Jimmy"},
+        {id: 3, name: "Jane"},
+      ];
+      // explain
+      // object {id: 1, name: "John"} đã được merge bởi {id: 1, name: "Josh"}
+    });
+```
+
 
 ### Các hàm hỗ trợ 
 
 
-###### 5. openModal
+###### 6. openModal
 Mở một modal và trả về id (thực sự là index) của modal đó, dùng ở hàm 6
 ```jsx
     const modalIndex = this.openModal(()=>{
@@ -121,13 +152,13 @@ Mở một modal và trả về id (thực sự là index) của modal đó, dù
     });
 ```
 
-###### 6. closeModal
+###### 7. closeModal
 Tắt một modal dựa vào index, nếu truyền index là -1 thì sẽ mở modal được tạo gần nhất
 ```jsx
     this.closeModal(modalIndex);
 ```
 
-###### 7.
+###### 8.
 ```jsx
     // 3 hàm  popup thông báo đơn 
     this.success("Thành công"); 
