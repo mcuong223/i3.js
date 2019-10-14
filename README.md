@@ -84,7 +84,7 @@ Hàm này dùng để xoá toàn bộ các phần tử của một mảng và th
 Thêm một phần tử vào cuối, hoặc vào một vị trí cụ thể của list nếu truyền vào index
 ```jsx
     // this.addElement(listObj, obj, index, callback);
-    // index là vị trí add vào, để null thì default sẽ add vào sau
+    // index là vị trí add vào, để null thì default sẽ add vào sau cùng
     // VD: 
     const newPerson = {
         name: "Cuong", 
