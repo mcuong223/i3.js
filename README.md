@@ -127,7 +127,7 @@ VD:
         {id: 3, name: "Jane"},
       ];
       // explain
-      // object {id: 1, name: "John"} đã được merge bởi {id: 1, name: "Josh"}
+      // object {id: 1, name: "John"} đã được merge bởi {id: 1, name: "Josh"} dựa vào comparer (a.id == b.id)
     });
 ```
 
@@ -153,7 +153,7 @@ Mở một modal và trả về id (thực sự là index) của modal đó, dù
 ```
 
 ###### 7. closeModal
-Tắt một modal dựa vào index, nếu truyền index là -1 thì sẽ mở modal được tạo gần nhất
+Đóng một modal dựa vào index, nếu truyền index là -1 thì sẽ đóng modal được tạo gần nhất
 ```jsx
     this.closeModal(modalIndex);
 ```
