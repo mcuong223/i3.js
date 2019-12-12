@@ -131,41 +131,39 @@ VD:
     });
 ```
 
-
 ### Các hàm hỗ trợ 
 
 
 ###### 6. openModal
-Mở một modal và trả về id (thực sự là index) của modal đó, dùng ở hàm 6
+Mở một modal và trả về index của modal đó, dùng ở hàm 6
 ```jsx
     const modalIndex = this.openModal(()=>{
         return({
-            title: "tiêu đề của modal",
+            title: "title",
             body: <A_Random_Component />, // nội dung
             otherProps: {
                 // một số các option cho modal, có thể có hoặc ko 
                 slideDirection: "left" // or "right", "down", "up", phía xuất hiện và biến mất của modal
                 freeSize: true // false, nếu true thì kích thước modal sẽ tuỳ thuộc vào body
-                // và một số options khác 
+                // options khác 
             }
         })
     });
 ```
 
 ###### 7. closeModal
-Đóng một modal dựa vào index, nếu truyền index là -1 thì sẽ đóng modal được tạo gần nhất
+Đóng một modal dựa vào modalIndex, nếu modalIndex là -1 thì sẽ đóng modal được tạo gần nhất
 ```jsx
     this.closeModal(modalIndex);
 ```
 
-###### 8.
+###### 8 popup.
 ```jsx
-    // 3 hàm  popup thông báo đơn 
+    // popup thông báo đơn 
     this.success("Thành công"); 
     this.warning("Cảnh báo");
     this.error("Lỗi");
-    
-    // hàm này dùng để confirm
+    // confirm
     this.confirm(
         "Are you sure about that?",
         {
@@ -183,8 +181,91 @@ Mở một modal và trả về id (thực sự là index) của modal đó, dù
             }
         }
     )
-    
 ```
 
-
-
+###### 9. Clone component
+Giả sử mở một Modal có một component `EditProduct` được dùng để chỉnh sửa lên một object `product` như bên dưới.
+Lúc này việc onChange value bên trong `EditProduct` sẽ chỉnh sửa luôn `this.state.products[0]` ở bên ngoài, và việc này chưa chắc mình đã mong muốn
+```jsx
+class EditProduct extends BaseConsumer {
+    
+    consumerContent(){
+        const { product } = this.props;
+        return(
+            <input 
+                placeholder="Nhap ten"
+                value={product.name}
+                onChange={event => {
+                    this.updateObject(product, {name: event.target.value});
+                }}
+            />
+        )
+    }
+}
+```
+```jsx
+const modalFunc = () => (
+    <EditProduct 
+        product={this.state.products[0]} // ví dụ
+    />
+)
+this.openModal(modalFunc);
+```
+Cách giải quyết:
+1. Tạo một component, thường sẽ thêm chữ "Clone" đăng trước, `CloneEditProduct`
+```jsx
+class CloneEditProduct extends BaseCloneConsumer {
+    _randomKey = ehealth.guid.get();
+    getCloneStateName() {
+        return this._randomKey;
+    }
+    getCloneStateData() {
+        return this.props.product;
+    }
+    childrenCloneContent(){
+        // data này chính là this.props.product đã được clone ra
+        const data = this.getCloneStateByKey(this._randomKey); 
+        const { product, ...others } = this.props;
+        return (
+            <EditProduct 
+                commitData={this.commitData} // hàm này dùng để "đập" product đã được clone ra product bên ngoài
+                product={data}
+                {...others}
+            />
+        )
+    }
+}
+```
+2. Khi muốn bật modal và chỉ muốn chỉnh sửa data bên trong modal đó (không kéo theo data bên ngoài)
+```jsx
+const modalFunc = () => (
+    <CloneEditProduct 
+        product={this.state.products[0]}
+    />
+)
+this.openModal(modalFunc);
+```
+3. Lúc này ở bên trong EditProduct sẽ hoạt động một cách bình thường (ngoài việc khi được chỉnh sửa thì chỉnh sửa một mình nó) và có thêm một hàm là this.props.commitData (hàm này không tự động có, được truyền vào ở `CloneEditProduct`)
+```jsx
+class EditProduct extends BaseConsumer {
+    consumerContent(){
+        const { product, commitData } = this.props;
+        return(
+            <div>
+                <input 
+                    placeholder="Nhap ten"
+                    value={product.name}
+                    onChange={event => {
+                        this.updateObject(product, {name: event.target.value});
+                    }}
+                />
+                <button onClick={() => {
+                        commitData(); // sau hàm này, data nãy giờ chỉnh sửa sẽ cập nhật ra bên ngoài
+                    }}>
+                    Save
+                </button>
+            </div>
+        )
+    }
+}
+```
